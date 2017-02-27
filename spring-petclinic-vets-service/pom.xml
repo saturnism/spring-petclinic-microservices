@@ -121,6 +121,7 @@
                             </resources>
                             <buildArgs>
                                 <ARTIFACT_NAME>${project.build.finalName}</ARTIFACT_NAME>
+                                <ARTIFACT_VERSION>${project.version}</ARTIFACT_VERSION>
                             </buildArgs>
                         </configuration>
                     </plugin>

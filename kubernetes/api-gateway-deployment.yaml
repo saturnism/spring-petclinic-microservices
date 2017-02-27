@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: api-gateway
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        service: api-gateway
+    spec:
+      containers:
+      - command:
+        - /bin/sh
+        - -c
+        - ./wait-for-it.sh discovery-server:8761 --timeout=60 -- java -agentpath:/opt/cdbg/cdbg_java_agent.so==--logtostderr=1
+          -Dcom.google.cdbg.module=${ARTIFACT_NAME} -Dcom.google.cdbg.version=${ARTIFACT_VERSION}
+          -Djava.security.egd=file:/dev/./urandom -jar /app.jar
+        image: saturnism/spring-petclinic-api-gateway
+        name: api-gateway
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources: {}
+      restartPolicy: Always
+status: {}

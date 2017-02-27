@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: admin-server
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        service: admin-server
+    spec:
+      containers:
+      - command:
+        - ./wait-for-it.sh
+        - discovery-server:8761
+        - --timeout=60
+        - --
+        - java
+        - -Djava.security.egd=file:/dev/./urandom
+        - -jar
+        - /app.jar
+        image: saturnism/spring-petclinic-admin-server
+        name: admin-server
+        ports:
+        - containerPort: 9090
+          protocol: TCP
+        resources: {}
+      restartPolicy: Always
+status: {}

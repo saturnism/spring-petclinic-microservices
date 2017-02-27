@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: config-server
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        service: config-server
+    spec:
+      containers:
+      - image: saturnism/spring-petclinic-config-server
+        name: config-server
+        ports:
+        - containerPort: 8888
+          protocol: TCP
+        resources: {}
+      restartPolicy: Always
+status: {}

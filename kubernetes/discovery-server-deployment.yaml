@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: discovery-server
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        service: discovery-server
+    spec:
+      containers:
+      - command:
+        - ./wait-for-it.sh
+        - config-server:8888
+        - --timeout=60
+        - --
+        - java
+        - -Djava.security.egd=file:/dev/./urandom
+        - -jar
+        - /app.jar
+        image: saturnism/spring-petclinic-discovery-server
+        name: discovery-server
+        ports:
+        - containerPort: 8761
+          protocol: TCP
+        resources: {}
+      restartPolicy: Always
+status: {}
